@@ -2,7 +2,7 @@ plugins {
     id(libs.plugins.android.library.get().pluginId)
     id(libs.plugins.kotlin.android.get().pluginId)
     id(libs.plugins.kotlin.kapt.get().pluginId)
-    id(libs.plugins.plugin.serialization.get().pluginId)
+    id(libs.plugins.kotlin.plugin.serialization.get().pluginId)
 }
 
 android {
