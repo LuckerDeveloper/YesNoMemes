@@ -1,4 +1,4 @@
-package com.luckerdeveloper.yesnomemes.ui
+package com.luckerdeveloper.yesnomemes.ui.yesno
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -10,19 +10,44 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.luckerdeveloper.yesnomemes.ui.theme.AppTheme
 
 @Composable
-fun App(modifier: Modifier = Modifier) {
+fun YesNoRoute(
+    viewModel: YesNoViewModel,
+    modifier: Modifier = Modifier,
+) {
+    val viewState: YesNoViewModel.ViewState by viewModel.viewState.collectAsStateWithLifecycle()
+    YesNoScreen(
+        viewState = viewState,
+        onAskButtonClick = { viewModel.handleEvent(YesNoViewModel.Event.OnClickAsk) },
+        modifier = modifier,
+    )
+}
+
+@Composable
+fun YesNoScreen(
+    viewState: YesNoViewModel.ViewState,
+    onAskButtonClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
     Box(
         modifier = modifier.fillMaxSize()
     ) {
+        val text = when (viewState) {
+            is YesNoViewModel.ViewState.Init -> "Yes or no?"
+            is YesNoViewModel.ViewState.Loading -> "Loading"
+            is YesNoViewModel.ViewState.Success -> viewState.answer.toString()
+            is YesNoViewModel.ViewState.Error -> viewState.answer.toString()
+        }
         Text(
-            text = "Yes or no?",
+            text = text,
             style = MaterialTheme.typography.displayLarge,
             color = MaterialTheme.colorScheme.primary,
             modifier = Modifier
@@ -32,7 +57,8 @@ fun App(modifier: Modifier = Modifier) {
         )
 
         Button(
-            onClick = { /*TODO*/ },
+            onClick = onAskButtonClick,
+            enabled = viewState is YesNoViewModel.ViewState.Init,
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .padding(vertical = 8.dp)
@@ -51,6 +77,9 @@ fun App(modifier: Modifier = Modifier) {
 @Composable
 private fun AppPreview() {
     AppTheme {
-        App()
+        YesNoScreen(
+            viewState = YesNoViewModel.ViewState.Init,
+            onAskButtonClick = {}
+        )
     }
 }

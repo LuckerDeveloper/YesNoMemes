@@ -1,7 +1,7 @@
-package com.luckerdeveloper.requestyesno.network
+package com.luckerdeveloper.network.di
 
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
-import com.luckerdeveloper.requestyesno.network.YesNoService
+import com.luckerdeveloper.network.network.YesNoService
 import dagger.Module
 import dagger.Provides
 import kotlinx.serialization.json.Json
@@ -12,11 +12,11 @@ import retrofit2.Retrofit
 class NetworkModule {
 
     @Provides
-    fun provideYesNoService(): com.luckerdeveloper.requestyesno.network.YesNoService {
+    fun provideYesNoService(): YesNoService {
         return Retrofit.Builder()
             .baseUrl("https://yesno.wtf/")
             .addConverterFactory(Json.asConverterFactory("application/json".toMediaType()))
             .build()
-            .create(com.luckerdeveloper.requestyesno.network.YesNoService::class.java)
+            .create(YesNoService::class.java)
     }
 }

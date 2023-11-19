@@ -1,4 +1,4 @@
-package com.luckerdeveloper.requestyesno.network
+package com.luckerdeveloper.network.network
 
 import retrofit2.http.GET
 
