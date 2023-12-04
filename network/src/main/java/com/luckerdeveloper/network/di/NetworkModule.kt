@@ -4,6 +4,7 @@ import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFact
 import com.luckerdeveloper.network.network.YesNoService
 import dagger.Module
 import dagger.Provides
+import javax.inject.Singleton
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import retrofit2.Retrofit
@@ -12,6 +13,7 @@ import retrofit2.Retrofit
 class NetworkModule {
 
     @Provides
+    @Singleton
     fun provideYesNoService(): YesNoService {
         return Retrofit.Builder()
             .baseUrl("https://yesno.wtf/")

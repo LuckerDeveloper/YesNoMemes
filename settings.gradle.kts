@@ -17,3 +17,4 @@ dependencyResolutionManagement {
 rootProject.name = "Yes No Memes"
 include(":app")
 include(":network")
+include(":yes-no-request")

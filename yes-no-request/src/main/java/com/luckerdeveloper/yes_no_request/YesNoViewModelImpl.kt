@@ -1,5 +1,6 @@
-package com.luckerdeveloper.yesnomemes.ui.yesno
+package com.luckerdeveloper.yes_no_request
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -46,10 +47,15 @@ class YesNoViewModelImpl(private val yesNoService: YesNoService) : ViewModel(), 
         val response = try {
             yesNoService.getYesNo()
         } catch (e: Exception) {
+            Log.e(NETWORK_TAG, "load answer exception: $e")
             YesNoApiResponse("true")
         }
         delay(1_000)
         return Pair(response.answer.toBoolean(), response.image)
+    }
+
+    companion object {
+        const val NETWORK_TAG = "NETWORK_TAG"
     }
 
     class Factory @Inject constructor(

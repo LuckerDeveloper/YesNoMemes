@@ -9,10 +9,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
+import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.luckerdeveloper.yesnomemes.ui.theme.AppTheme
-import com.luckerdeveloper.yesnomemes.ui.yesno.YesNoRoute
-import com.luckerdeveloper.yesnomemes.ui.yesno.YesNoViewModelImpl
+import com.luckerdeveloper.yes_no_request.YesNoViewModelImpl
 import dagger.Lazy
 import javax.inject.Inject
 
@@ -35,12 +35,15 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background,
                     darkIcons = !isSystemInDarkTheme()
                 )
-
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    YesNoRoute(viewModel)
+                    val navController = rememberNavController()
+                    AppNavHost(
+                        navController = navController,
+                        yesNoViewModelImpl = viewModel
+                    )
                 }
             }
         }

@@ -1,4 +1,4 @@
-package com.luckerdeveloper.yesnomemes.ui.yesno
+package com.luckerdeveloper.yes_no_request
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,7 +16,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.luckerdeveloper.yesnomemes.ui.theme.AppTheme
 
 @Composable
 fun YesNoRoute(
@@ -76,10 +75,8 @@ fun YesNoScreen(
 @Preview()
 @Composable
 private fun AppPreview() {
-    AppTheme {
-        YesNoScreen(
-            viewState = YesNoViewModel.ViewState.Init,
-            onAskButtonClick = {}
-        )
-    }
+    YesNoScreen(
+        viewState = YesNoViewModel.ViewState.Init,
+        onAskButtonClick = {}
+    )
 }

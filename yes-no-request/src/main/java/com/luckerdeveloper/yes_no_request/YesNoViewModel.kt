@@ -1,4 +1,4 @@
-package com.luckerdeveloper.yesnomemes.ui.yesno
+package com.luckerdeveloper.yes_no_request
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
