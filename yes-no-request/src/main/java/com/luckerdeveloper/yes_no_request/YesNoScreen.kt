@@ -15,11 +15,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
 @Composable
 fun YesNoRoute(
-    viewModel: YesNoViewModel,
+    viewModel: YesNoViewModelImpl = hiltViewModel(),
     modifier: Modifier = Modifier,
 ) {
     val viewState: YesNoViewModel.ViewState by viewModel.viewState.collectAsStateWithLifecycle()
@@ -31,7 +32,7 @@ fun YesNoRoute(
 }
 
 @Composable
-fun YesNoScreen(
+internal fun YesNoScreen(
     viewState: YesNoViewModel.ViewState,
     onAskButtonClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -74,7 +75,7 @@ fun YesNoScreen(
 
 @Preview()
 @Composable
-private fun AppPreview() {
+private fun YesNoPreview() {
     YesNoScreen(
         viewState = YesNoViewModel.ViewState.Init,
         onAskButtonClick = {}

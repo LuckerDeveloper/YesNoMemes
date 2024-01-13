@@ -8,13 +8,13 @@ import androidx.navigation.compose.composable
 const val yesNoNavigationRoute = "yes_no_route"
 
 fun NavController.navigateToYesNo(navOptions: NavOptions? = null) {
-    this.navigate(com.luckerdeveloper.yes_no_request.yesNoNavigationRoute, navOptions)
+    this.navigate(yesNoNavigationRoute, navOptions)
 }
 
-fun NavGraphBuilder.yesNoScreen(viewModelImpl: YesNoViewModelImpl) {
+fun NavGraphBuilder.yesNoScreen() {
     composable(
-        route = com.luckerdeveloper.yes_no_request.yesNoNavigationRoute,
+        route = yesNoNavigationRoute,
     ) {
-        YesNoRoute(viewModelImpl)
+        YesNoRoute()
     }
 }

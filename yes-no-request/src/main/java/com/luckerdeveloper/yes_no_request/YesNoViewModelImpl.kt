@@ -2,12 +2,11 @@ package com.luckerdeveloper.yes_no_request
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.luckerdeveloper.network.network.YesNoApiResponse
 import com.luckerdeveloper.network.network.YesNoService
+import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
-import javax.inject.Provider
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -16,7 +15,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-class YesNoViewModelImpl(private val yesNoService: YesNoService) : ViewModel(), YesNoViewModel {
+@HiltViewModel
+class YesNoViewModelImpl @Inject constructor(private val yesNoService: YesNoService) : ViewModel(),
+    YesNoViewModel {
 
     private val _viewState: MutableStateFlow<YesNoViewModel.ViewState> =
         MutableStateFlow(YesNoViewModel.ViewState.Init)
@@ -56,16 +57,5 @@ class YesNoViewModelImpl(private val yesNoService: YesNoService) : ViewModel(), 
 
     companion object {
         const val NETWORK_TAG = "NETWORK_TAG"
-    }
-
-    class Factory @Inject constructor(
-        private val yesNoService: Provider<YesNoService>
-    ) : ViewModelProvider.Factory {
-
-        @Suppress("UNCHECKED_CAST")
-        override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            require(modelClass == YesNoViewModelImpl::class.java)
-            return YesNoViewModelImpl(yesNoService.get()) as T
-        }
     }
 }

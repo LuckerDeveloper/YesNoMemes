@@ -3,6 +3,7 @@ plugins {
     id(libs.plugins.kotlin.android.get().pluginId)
     id(libs.plugins.kotlin.kapt.get().pluginId)
     id(libs.plugins.kotlin.plugin.serialization.get().pluginId)
+    id(libs.plugins.hilt.android.get().pluginId)
 }
 
 android {
@@ -36,10 +37,10 @@ android {
 
 dependencies {
     implementation(libs.androidx.core.ktx)
-    implementation(libs.dagger)
-    kapt(libs.dagger.compiler)
-    implementation(libs.retrofit)
-    implementation(libs.retrofit.kotlin.serialization)
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.android.compiler)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.ok.http)
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.kotlin.serialization)
 }
