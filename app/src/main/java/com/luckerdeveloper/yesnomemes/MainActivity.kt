@@ -31,7 +31,13 @@ class MainActivity : ComponentActivity() {
                 ) {
                     val navController = rememberNavController()
                     AppNavHost(
-                        navController = navController
+                        navController = navController,
+                        setSystemBarColors = { color, darkIcons ->
+                            systemUiController.setSystemBarsColor(
+                                color = color,
+                                darkIcons = darkIcons
+                            )
+                        }
                     )
                 }
             }

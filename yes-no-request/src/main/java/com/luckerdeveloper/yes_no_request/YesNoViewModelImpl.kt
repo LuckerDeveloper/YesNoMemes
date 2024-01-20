@@ -36,7 +36,7 @@ class YesNoViewModelImpl @Inject constructor(private val yesNoService: YesNoServ
                     _viewState.value = YesNoViewModel.ViewState.Loading
                     val result = load()
                     _viewState.value = YesNoViewModel.ViewState.Success(
-                        answer = result.first,
+                        answer = result.first == "yes",
                         imageUrl = result.second,
                     )
                 }
@@ -44,15 +44,15 @@ class YesNoViewModelImpl @Inject constructor(private val yesNoService: YesNoServ
         }
     }
 
-    private suspend fun load(): Pair<Boolean, String?> {
+    private suspend fun load(): Pair<String, String?> {
         val response = try {
             yesNoService.getYesNo()
         } catch (e: Exception) {
             Log.e(NETWORK_TAG, "load answer exception: $e")
             YesNoApiResponse("true")
         }
-        delay(1_000)
-        return Pair(response.answer.toBoolean(), response.image)
+        Log.i(NETWORK_TAG, "response: $response")
+        return Pair(response.answer, response.image)
     }
 
     companion object {
