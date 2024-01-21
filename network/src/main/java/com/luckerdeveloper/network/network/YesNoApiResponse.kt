@@ -6,5 +6,5 @@ import kotlinx.serialization.Serializable
 data class YesNoApiResponse(
     val answer: String,
     val forced: Boolean = false,
-    val image: String? = null,
+    val image: String,
 )

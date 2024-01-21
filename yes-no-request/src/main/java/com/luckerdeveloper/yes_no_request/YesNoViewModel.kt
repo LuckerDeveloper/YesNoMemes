@@ -16,8 +16,8 @@ interface YesNoViewModel {
 
     sealed class ViewState {
         object Init: ViewState()
-        object Loading: ViewState()
-        data class Success(val answer: Boolean, val imageUrl: String?): ViewState()
+        data class Loading(val countDownValue: Int): ViewState()
+        data class Success(val answer: Boolean, val imageUrl: String): ViewState()
         data class Error(val throwable: Throwable, val answer: Boolean, val imageUrl: String? = null): ViewState()
     }
 

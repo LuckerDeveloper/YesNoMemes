@@ -49,32 +49,37 @@ internal fun YesNoScreen(
             .fillMaxSize()
             .background(backgroundColor)
     ) {
-        val text = when (viewState) {
-            is YesNoViewModel.ViewState.Init -> "Yes or no?"
-            is YesNoViewModel.ViewState.Loading -> "Loading"
-            is YesNoViewModel.ViewState.Success -> viewState.answer.toString()
-            is YesNoViewModel.ViewState.Error -> viewState.answer.toString()
-        }
-        Text(
-            text = text,
-            style = MaterialTheme.typography.displayLarge,
-            color = MaterialTheme.colorScheme.primary,
-            modifier = Modifier
-                .align(Alignment.Center)
-                .padding(vertical = 8.dp)
-                .wrapContentSize(),
-        )
-
-        if (viewState is YesNoViewModel.ViewState.Success && viewState.imageUrl != null) {
-            GifImage(
-                link = viewState.imageUrl,
-                modifier = Modifier.align(Alignment.Center),
-            )
+        when (viewState) {
+            is YesNoViewModel.ViewState.Init,
+            is YesNoViewModel.ViewState.Loading,
+            is YesNoViewModel.ViewState.Error -> {
+                val text = when (viewState) {
+                    is YesNoViewModel.ViewState.Init -> "Yes or no?"
+                    is YesNoViewModel.ViewState.Loading -> viewState.countDownValue.toString()
+                    is YesNoViewModel.ViewState.Error -> "Error"
+                    is YesNoViewModel.ViewState.Success -> throw IllegalStateException("Illegal type of viewState")
+                }
+                Text(
+                    text = text,
+                    style = MaterialTheme.typography.displayLarge,
+                    color = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier
+                        .align(Alignment.Center)
+                        .padding(vertical = 8.dp)
+                        .wrapContentSize(),
+                )
+            }
+            is YesNoViewModel.ViewState.Success -> {
+                GifImage(
+                    link = viewState.imageUrl,
+                    modifier = Modifier.align(Alignment.Center),
+                )
+            }
         }
 
         Button(
             onClick = onAskButtonClick,
-            enabled = viewState is YesNoViewModel.ViewState.Init,
+            enabled = viewState is YesNoViewModel.ViewState.Init || viewState is YesNoViewModel.ViewState.Success,
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .padding(vertical = 8.dp)
@@ -82,8 +87,14 @@ internal fun YesNoScreen(
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp)
         ) {
+            val text = when (viewState) {
+                is YesNoViewModel.ViewState.Success -> "Again"
+                else -> {
+                    "Ask"
+                }
+            }
             Text(
-                text = "Ask",
+                text = text,
             )
         }
     }

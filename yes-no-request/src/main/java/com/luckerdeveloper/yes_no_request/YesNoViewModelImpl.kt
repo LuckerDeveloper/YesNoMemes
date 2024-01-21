@@ -3,10 +3,10 @@ package com.luckerdeveloper.yes_no_request
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.luckerdeveloper.network.network.YesNoApiResponse
 import com.luckerdeveloper.network.network.YesNoService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
+import kotlinx.coroutines.async
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withTimeoutOrNull
 
 @HiltViewModel
 class YesNoViewModelImpl @Inject constructor(private val yesNoService: YesNoService) : ViewModel(),
@@ -33,8 +34,18 @@ class YesNoViewModelImpl @Inject constructor(private val yesNoService: YesNoServ
         when (event) {
             YesNoViewModel.Event.OnClickAsk -> {
                 viewModelScope.launch {
-                    _viewState.value = YesNoViewModel.ViewState.Loading
-                    val result = load()
+                    val deferredResult = async {
+                        withTimeoutOrNull(3_000) {
+                            return@withTimeoutOrNull load()
+                        }
+                    }
+                    _viewState.value = YesNoViewModel.ViewState.Loading(3)
+                    delay(1_000L)
+                    _viewState.value = YesNoViewModel.ViewState.Loading(2)
+                    delay(1_000L)
+                    _viewState.value = YesNoViewModel.ViewState.Loading(1)
+                    delay(1_000L)
+                    val result = deferredResult.await()!!
                     _viewState.value = YesNoViewModel.ViewState.Success(
                         answer = result.first == "yes",
                         imageUrl = result.second,
@@ -44,13 +55,8 @@ class YesNoViewModelImpl @Inject constructor(private val yesNoService: YesNoServ
         }
     }
 
-    private suspend fun load(): Pair<String, String?> {
-        val response = try {
-            yesNoService.getYesNo()
-        } catch (e: Exception) {
-            Log.e(NETWORK_TAG, "load answer exception: $e")
-            YesNoApiResponse("true")
-        }
+    private suspend fun load(): Pair<String, String> {
+        val response = yesNoService.getYesNo()
         Log.i(NETWORK_TAG, "response: $response")
         return Pair(response.answer, response.image)
     }
